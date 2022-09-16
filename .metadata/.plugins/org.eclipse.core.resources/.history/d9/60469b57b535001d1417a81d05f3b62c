@@ -1,0 +1,14 @@
+package com.project.first.project.controllers;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+public class UserController {
+
+@RestController /* DECLARA QUE VAI SER UM CONTROLADOR (VAI FAZER REQUISIÇÕES CRUD) */
+@RequestMapping(value = "/users") /* CAMINHO QUE VAI RESPONDER */
+public class UserController {
+		
+	
+	}
+}

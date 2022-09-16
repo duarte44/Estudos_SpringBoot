@@ -1,0 +1,45 @@
+package com.project.first.project.services;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.project.first.project.entities.User;
+import com.project.first.project.repositories.UserRepository;
+
+public class UsersServices {
+	
+	@Autowired
+	private UserRepository repository;
+	
+	@GetMapping(value = "/{id}")
+	public Optional<User> find(@PathVariable Long id) {
+		return repository.findById(id);
+	}
+
+	@GetMapping
+	public List<User> findAll(@PathVariable Long id) {
+		return repository.findAll();
+	}
+	
+	
+	@PostMapping //"INSERT" Salva um novo usuário
+	public User insert(@RequestBody User user){
+		User result = repository.save(user); //Salva um novo usuário no banco
+		return result;
+	
+}
+
+	@DeleteMapping(value = "/{id}")
+	public void delete(@PathVariable Long id) {
+		repository.deleteById(id);
+	}
+
+}

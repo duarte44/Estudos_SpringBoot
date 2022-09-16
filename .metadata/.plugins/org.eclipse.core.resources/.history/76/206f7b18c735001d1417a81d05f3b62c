@@ -1,0 +1,21 @@
+package com.project.first.project.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.project.first.project.entities.User;
+import com.project.first.project.repositories.UserRepository;
+
+public class UsersServices {
+@Autowired
+private UserRepository repository;
+	
+	public List<User> getAllEmployees(){
+	      List<User> employees = new ArrayList<User>();
+	      repository.findAll().forEach(employee -> employees.add(employee));
+	      return employees;
+	   }
+
+}

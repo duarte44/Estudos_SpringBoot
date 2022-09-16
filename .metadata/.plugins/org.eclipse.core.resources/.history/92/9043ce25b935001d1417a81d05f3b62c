@@ -1,0 +1,4 @@
+INSERT INTO tb_user(id, name, email, senha) VALUES (null,'Maria', 'maria@gmail.com', '111111');
+INSERT INTO tb_user(id, name, email, senha) VALUES (null,'Bob', 'bob@gmail.com', '111111');
+INSERT INTO tb_user(id, name, email, senha) VALUES (null,'Alex', 'alex@gmail.com', '111111');
+INSERT INTO tb_user(id, name, email, senha) VALUES (null,'Ana', 'ana@gmail.com', '111111');
