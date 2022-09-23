@@ -14,3 +14,8 @@
 1663868509637	Delete element
 1663868520985	Copy compilation unit
 1663943232692	Rename type 'UsersServices'
+1663945765168	Rename package 'com.project.first.project.services'
+1663945793878	Rename type 'UserServices'
+1663945857411	Rename package 'com.project.first.project.resources'
+1663945868587	Rename type 'UserResource'
+1663946942633	Delete element

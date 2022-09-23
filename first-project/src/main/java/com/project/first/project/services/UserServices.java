@@ -1,63 +1,74 @@
 package com.project.first.project.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.project.first.project.dto.UserDTO;
 import com.project.first.project.entities.User;
+import com.project.first.project.exceptions.DataIntegrityException;
+import com.project.first.project.exceptions.ObjectNotFoundException;
 import com.project.first.project.repositories.UserRepository;
 
-@RestController /* DECLARA QUE VAI SER UM CONTROLADOR (VAI FAZER REQUISIÇÕES CRUD) */
-@RequestMapping(value = "/user") /* CAMINHO QUE VAI RESPONDER */
+@Service
 public class UserServices {
 	
 	@Autowired
 	private UserRepository repository;
 	
-	
-	@GetMapping(value = "/{id}")
-	public User find(@PathVariable Integer id) {		
-		return repository.findById(id).get();
+		
+	public User find(Integer id) {		
+		Optional<User> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
 	}
 	
+		
+	public User insert(User obj){
+		obj.setId(null);
+		return repository.save(obj);
+	}
+		
+	
+	public User update(User obj) {
+		User newObj = find(obj.getId());
+		updateData(newObj, obj); // atualiza os dados de newObj com base em obj
+		return repository.save(newObj);
+	}
 
-	@GetMapping
+		
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que tem produtos");
+		}
+	}
+	
+	
 	public List<User> findAll() {
 		return repository.findAll();
 	}
+		
 	
 	
-	@PostMapping //"INSERT" Salva um novo usuário
-	public User insert(@RequestBody User user){
-		User result = repository.save(user); //Salva um novo usuário no banco
-		return result;
 	
-}
-
-	@DeleteMapping(value = "/{id}")
-	public void delete(@PathVariable Integer id) {
-		repository.deleteById(id);
+	private void updateData(User newObj, User obj) {
+		newObj.setName(obj.getName()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
+		newObj.setEmail(obj.getEmail());
+		newObj.setSenha(obj.getSenha());
+		
 	}
 	
-	@PutMapping
-	public User update(@RequestBody User user) {
-		User obj = find(user.getId());
-		updateData(obj, user);
-		return repository.save(obj);
-	}
-	
-	private void updateData(User obj, User user) {		
-		obj.setName(user.getName()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
-		obj.setEmail(user.getEmail());
-		obj.setSenha(user.getSenha());
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getNome(), objDto.getEmail(), objDto.getSenha());
 	}
 
 }

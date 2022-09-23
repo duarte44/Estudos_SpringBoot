@@ -1,0 +1,22 @@
+package com.project.first.project.dto;
+
+import java.io.Serializable;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+public class UserDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	//DTO DEFINE O QUE VAI SER VOLTADO
+	
+	private Integer id;
+	
+	@NotEmpty(message="Preenchimento obrigatório") //n deixa ser nulo
+	@Length(min=5, max=80, message="O tamnho deve ser entre 5 e 80 caracteres")
+	private String nome;
+	private String email;
+	private String senha;
+
+}

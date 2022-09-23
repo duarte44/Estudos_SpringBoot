@@ -1,0 +1,64 @@
+package com.project.first.project.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.project.first.project.entities.User;
+import com.project.first.project.exceptions.ObjectNotFoundException;
+import com.project.first.project.repositories.UserRepository;
+
+@Service
+public class UserServices {
+	
+	@Autowired
+	private UserRepository repository;
+	
+		
+	public User find(Integer id) {		
+		Optional<User> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
+	}
+	
+		
+	public User insert(User obj){
+		obj.setId(null);
+		return repository.save(obj);
+	}
+
+	@GetMapping
+	public List<User> findAll() {
+		return repository.findAll();
+	}
+	
+	
+	
+
+	@DeleteMapping(value = "/{id}")
+	public void delete(@PathVariable Integer id) {
+		repository.deleteById(id);
+	}
+	
+	@PutMapping
+	public User update(@RequestBody User user) {
+		User obj = find(user.getId());
+		updateData(obj, user);
+		return repository.save(obj);
+	}
+	
+	private void updateData(User obj, User user) {		
+		obj.setName(user.getName()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
+		obj.setEmail(user.getEmail());
+		obj.setSenha(user.getSenha());
+	}
+
+}

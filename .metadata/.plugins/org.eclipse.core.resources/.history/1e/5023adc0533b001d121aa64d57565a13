@@ -1,0 +1,13 @@
+package com.project.first.project.dto;
+
+import java.io.Serializable;
+
+public class UserDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	//DTO DEFINE O QUE VAI SER VOLTADO
+	
+	private Integer id;
+
+}
