@@ -1,0 +1,82 @@
+package com.project.first.project.dto;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.first.project.entities.Notas;
+
+
+public class NotasDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	//DTO DEFINE O QUE VAI SER VOLTADO
+	
+	private Integer id;
+
+	private Double preco;	
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private Date date;
+	
+	
+	public NotasDTO() {
+		
+	}
+
+	public NotasDTO(Notas obj) {
+		super();
+		this.id = obj.getId();			
+		this.preco = obj.getPreco();
+		this.date = obj.getDate();
+			
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NotasDTO other = (NotasDTO) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	
+	
+	
+	
+}

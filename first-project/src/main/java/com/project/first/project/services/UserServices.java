@@ -6,9 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.project.first.project.dto.UserDTO;
 import com.project.first.project.entities.User;
@@ -21,6 +18,7 @@ public class UserServices {
 	
 	@Autowired
 	private UserRepository repository;
+	NotasServices notas;
 	
 		
 	public User find(Integer id) {		
@@ -37,7 +35,7 @@ public class UserServices {
 		
 	
 	public User update(User obj) {
-		User newObj = find(obj.getId());
+		User newObj = find(obj.getId());	
 		updateData(newObj, obj); // atualiza os dados de newObj com base em obj
 		return repository.save(newObj);
 	}
@@ -61,10 +59,10 @@ public class UserServices {
 	
 	
 	private void updateData(User newObj, User obj) {
-		newObj.setName(obj.getName()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
+		newObj.setNome(obj.getNome()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
 		newObj.setEmail(obj.getEmail());
-		newObj.setSenha(obj.getSenha());
-		
+		newObj.setSenha(obj.getSenha());		
+				
 	}
 	
 	public User fromDTO(UserDTO objDto) {

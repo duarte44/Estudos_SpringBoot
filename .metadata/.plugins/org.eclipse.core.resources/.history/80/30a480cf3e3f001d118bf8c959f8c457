@@ -1,0 +1,103 @@
+package com.project.first.project.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Entity
+@Table(name = "tb_notas")
+public class Notas implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id // chave primaria
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment no banco
+	private Integer id;
+
+	private Double preco;	
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private Date date;
+
+	@JsonBackReference
+	@ManyToMany
+	(mappedBy = "user")
+	private List<User> user = new ArrayList<>();
+
+	
+	public Notas() {
+		
+	}
+	
+	public Notas(Integer id, Double preco, Date date) {
+		super();
+		this.id = id;
+		this.preco = preco;
+		this.date = date;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Date getDate() {
+		return date;
+	}		
+
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}	
+	
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}		
+
+	public List<User> getUser() {
+		return user;
+	}
+
+	public void setUser(List<User> user) {
+		this.user = user;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Notas other = (Notas) obj;
+		return Objects.equals(id, other.id);
+	}
+
+
+}

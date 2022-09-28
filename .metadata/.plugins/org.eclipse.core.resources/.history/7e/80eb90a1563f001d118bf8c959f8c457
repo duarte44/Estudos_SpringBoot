@@ -1,0 +1,77 @@
+package com.project.first.project.services;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.project.first.project.dto.UserDTO;
+import com.project.first.project.entities.Notas;
+import com.project.first.project.entities.User;
+import com.project.first.project.exceptions.DataIntegrityException;
+import com.project.first.project.exceptions.ObjectNotFoundException;
+import com.project.first.project.repositories.UserRepository;
+
+@Service
+public class UserServices {
+	
+	@Autowired
+	private UserRepository repository;
+	NotasServices notas;
+	
+		
+	public User find(Integer id) {		
+		Optional<User> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
+	}
+	
+		
+	public User insert(User obj){
+		obj.setId(null);
+		return repository.save(obj);
+	}
+		
+	
+	public User update(User obj) {
+		User newObj = find(obj.getId());	
+		updateData(newObj, obj); // atualiza os dados de newObj com base em obj
+		return repository.save(newObj);
+	}
+
+		
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que tem produtos");
+		}
+	}
+	
+	
+	public List<User> findAll() {
+		return repository.findAll();
+	}
+		
+	
+	
+	
+	private void updateData(User newObj, User obj) {
+		newObj.setNome(obj.getNome()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
+		newObj.setEmail(obj.getEmail());
+		newObj.setSenha(obj.getSenha());		
+		newObj.getNotas().add((Notas) Arrays.asList(notas.newNt));
+		
+		
+		
+	}
+	
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getNome(), objDto.getEmail(), objDto.getSenha());
+	}
+
+}

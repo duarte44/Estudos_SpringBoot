@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -29,9 +30,8 @@ public class Notas implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date date;
 
-	
-	
-	@ManyToMany(mappedBy = "nota")	
+	@JsonBackReference
+	@ManyToMany(mappedBy = "notas")	
 	private List<User> user = new ArrayList<>();
 
 	

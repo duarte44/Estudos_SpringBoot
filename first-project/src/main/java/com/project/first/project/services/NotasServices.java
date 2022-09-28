@@ -1,61 +1,73 @@
 package com.project.first.project.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
+import com.project.first.project.dto.NotasDTO;
 import com.project.first.project.entities.Notas;
+import com.project.first.project.exceptions.DataIntegrityException;
+import com.project.first.project.exceptions.ObjectNotFoundException;
 import com.project.first.project.repositories.NotasRepository;
 
-@RestController /* DECLARA QUE VAI SER UM CONTROLADOR (VAI FAZER REQUISIÇÕES CRUD) */
-@RequestMapping(value = "/notas") /* CAMINHO QUE VAI RESPONDER */
+@Service
 public class NotasServices {
 	
 	@Autowired
 	private NotasRepository repository;
+
 	
-	@GetMapping(value = "/{id}")
-	public Notas find(@PathVariable Integer id) {		
-		return repository.findById(id).get();
+		
+	public Notas find(Integer id) {		
+		Optional<Notas> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Notas.class.getName()));
+	}
+	
+		
+	public Notas insert(Notas obj){
+		obj.setId(null);
+		return repository.save(obj);
+	}
+		
+	
+	public Notas update(Notas obj) {
+		Notas newObj = find(obj.getId());
+		updateData(newObj, obj); // atualiza os dados de newObj com base em obj
+		return repository.save(newObj);
 	}
 
-	@GetMapping
+		
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que tem produtos");
+		}
+	}
+	
+	
 	public List<Notas> findAll() {
 		return repository.findAll();
 	}
-	
-	
-	@PostMapping //"INSERT" Salva um novo usuário
-	public Notas insert(@RequestBody Notas notas){
-		Notas result = repository.save(notas); //Salva um novo usuário no banco
-		return result;
-	
-}
-
-	@DeleteMapping(value = "/{id}")
-	public void delete(@PathVariable Integer id) {
-		repository.deleteById(id);
-	}
-	
-	@PutMapping
-	public Notas update(@RequestBody Notas notas) {
-		Notas obj = find(notas.getId());
-		updateData(obj, notas);
-		return repository.save(obj);
-	}
-	
-	private void updateData(Notas obj, Notas user) {		
-		obj.setDate(user.getDate()); //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
-		obj.setPreco(user.getPreco());
 		
+	
+	
+	private void updateData(Notas newObj, Notas obj) {
+		newObj.setPreco(obj.getPreco());	
+		   
+		 //o newObj que a gente procurou no banco ele foi atualizado com os novos dados obj
+		
+		
+		
+	}
+	
+	public Notas fromDTO(NotasDTO objDto) {
+		return new Notas(objDto.getId(), objDto.getPreco(), objDto.getDate());
 	}
 
 }

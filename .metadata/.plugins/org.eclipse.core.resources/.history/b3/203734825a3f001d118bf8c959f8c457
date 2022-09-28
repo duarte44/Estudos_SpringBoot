@@ -1,0 +1,5 @@
+package com.project.first.project.validation;
+
+public interface UserInsert {
+
+}

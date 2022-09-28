@@ -2,8 +2,11 @@ package com.project.first.project.dto;
 
 import java.io.Serializable;
 
-import com.project.first.project.entities.User;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.project.first.project.entities.User;
 
 public class UserDTO implements Serializable {
 
@@ -13,10 +16,14 @@ public class UserDTO implements Serializable {
 	
 	private Integer id;
 	
+
+	@NotEmpty
+	@Length(min=5, max=80, message="o tamnho deve ser entre 5 e 80")
 	private String nome;
+		
 	private String email;
 	private String senha;
-
+	
 	
 	public UserDTO() {
 		
@@ -25,9 +32,9 @@ public class UserDTO implements Serializable {
 	public UserDTO(User obj) {
 		super();
 		this.id = obj.getId();			
-		this.nome = obj.getName();
+		this.nome = obj.getNome();
 		this.email = obj.getEmail();
-		this.senha = obj.getSenha();
+		this.senha = obj.getSenha();		
 	}
 
 	public Integer getId() {

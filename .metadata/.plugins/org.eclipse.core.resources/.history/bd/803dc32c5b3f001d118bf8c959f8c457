@@ -1,0 +1,60 @@
+package com.project.first.project.dto;
+
+import java.io.Serializable;
+
+public class UserNewDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	//DTO DEFINE O QUE VAI SER VOLTADO
+	
+
+	@NotEmpty(message="Preenchimento obrigatório") //n deixa ser nulo
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
+	private String nome;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Email(message="Email Invalido")
+	private String email;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	private String senha;
+	
+	public UserNewDTO() {
+		
+	}
+
+	public UserNewDTO(String nome, String email, String senha) {
+		super();
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	
+	
+}

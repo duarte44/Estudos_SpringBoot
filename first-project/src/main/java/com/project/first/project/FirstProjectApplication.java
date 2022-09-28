@@ -12,6 +12,7 @@ import com.project.first.project.entities.Notas;
 import com.project.first.project.entities.User;
 import com.project.first.project.repositories.NotasRepository;
 import com.project.first.project.repositories.UserRepository;
+import com.project.first.project.services.NotasServices;
 
 @SpringBootApplication
 public class FirstProjectApplication implements CommandLineRunner {
@@ -21,6 +22,10 @@ public class FirstProjectApplication implements CommandLineRunner {
 
 	@Autowired
 	private NotasRepository notasRepository;
+	
+	private NotasServices serv;
+	
+	private Notas notas;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FirstProjectApplication.class, args);
@@ -39,16 +44,19 @@ public class FirstProjectApplication implements CommandLineRunner {
 		Notas n2 = new Notas(null, 3000.00, sdf.parse("31/09/2017 10:32"));
 		Notas n3 = new Notas(null, 4000.00, sdf.parse("10/10/2017 10:32"));
 
-		/*n1.getUser().addAll(Arrays.asList(us));
+		n1.getUser().addAll(Arrays.asList(us));
 		n2.getUser().addAll(Arrays.asList(us));
 		n3.getUser().addAll(Arrays.asList(us2));		
 
 		us.getNotas().addAll(Arrays.asList(n1,n2));
-		us2.getNotas().addAll(Arrays.asList(n3));*/
-		
-		
-		notasRepository.saveAll(Arrays.asList(n1, n2, n3));		
+		us2.getNotas().addAll(Arrays.asList(n3));
+						
+		notasRepository.saveAll(Arrays.asList(n1, n2, n3));	
 		userRepository.saveAll(Arrays.asList(us, us2));	
+		
+		
+			
+		
 		
 	
 	}
