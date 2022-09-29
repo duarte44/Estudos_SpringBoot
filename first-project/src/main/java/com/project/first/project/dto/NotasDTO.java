@@ -3,9 +3,7 @@ package com.project.first.project.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.first.project.entities.Notas;
@@ -19,7 +17,7 @@ public class NotasDTO implements Serializable {
 	
 	private Integer id;	
 	
-	
+	@NotNull(message = "campo obrigatorio")
 	private Double preco;	
 	
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
